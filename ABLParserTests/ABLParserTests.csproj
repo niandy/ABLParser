@@ -595,6 +595,9 @@
     <None Include="Resources\jpnode\xref.p.xref">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\jpnode\xref2.cls.xref">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\legacy\appendprogram\t01\expect\t01.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1452,6 +1455,9 @@
     <Content Include="Resources\data\ttClass.cls">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\jpnode\xref2.cls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\legacy\appendprogram\t01\expect\t01.i">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

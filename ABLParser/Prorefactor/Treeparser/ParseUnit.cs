@@ -230,7 +230,12 @@ namespace ABLParser.Prorefactor.Treeparser
                         {                            
                             try
                             {
-                                if ((recNode.Statement.Line == @ref.Linenum) && (recNode.TableBuffer != null) && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase) && (recNode.AttrGet(IConstants.STORETYPE) == tableType) && ((src.Filenum == 1 && recNode.FileIndex == 0) || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
+                                if ((recNode.Statement.FirstNaturalChild.Line == @ref.Linenum)
+                                    && (recNode.TableBuffer != null)
+                                    && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase)
+                                    && (recNode.AttrGet(IConstants.STORETYPE) == tableType)
+                                    && ((src.Filenum == 1 && recNode.FileIndex == 0)
+                                        || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
                                 {
                                     recNode.WholeIndex = "WHOLE-INDEX".Equals(@ref.Detail);
                                     recNode.SearchIndexName = recNode.TableBuffer.Table.GetName() + "." + @ref.Objectcontext;
@@ -267,7 +272,11 @@ namespace ABLParser.Prorefactor.Treeparser
                         {                            
                             try
                             {
-                                if ((recNode.Statement.Line == @ref.Linenum) && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase) && (recNode.AttrGet(IConstants.STORETYPE) == tableType) && ((src.Filenum == 1 && recNode.FileIndex == 0) || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
+                                if ((recNode.Statement.FirstNaturalChild.Line == @ref.Linenum)
+                                    && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase)
+                                    && (recNode.AttrGet(IConstants.STORETYPE) == tableType)
+                                    && ((src.Filenum == 1 && recNode.FileIndex == 0)
+                                        || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
                                 {
                                     recNode.SortAccess = @ref.Objectcontext;
                                     break;
