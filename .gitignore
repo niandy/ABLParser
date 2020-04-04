@@ -1,1 +1,8 @@
 .vs/
+/packages/
+/ABLParser/bin/
+/ABLParser/obj/
+/ABLParser/packages/
+/ABLParserTests/bin/
+/ABLParserTests/obj/
+/ABLParserTests/packages/
