@@ -1,6 +1,0 @@
-DEFINE TEMP-TABLE tt1 NO-UNDO
-    FIELD fld1     AS INTEGER
-    FIELD fld2     AS CHARACTER
-    FIELD abstract AS LOGICAL
-    FIELD fld3     AS INTEGER.
-
