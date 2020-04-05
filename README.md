@@ -1,5 +1,6 @@
 # ABLParser
 .Net port of proparse library
+[![Build Status](https://travis-ci.com/niandy/ABLParser.svg?branch=master)](https://travis-ci.com/niandy/ABLParser)
 
 The port of https://github.com/Riverside-Software/sonar-openedge
 
