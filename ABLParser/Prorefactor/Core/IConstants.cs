@@ -66,13 +66,6 @@ namespace ABLParser.Prorefactor.Core
         /// "customer.name" is qualified, but "name" is unqualified. This node attribute is set by TreeParser01.
         /// </summary>
         public const int UNQUALIFIED_FIELD = 10150;
-        /// <summary>
-        /// Node attribute key, the value of which is a org.prorefactor.treeparser.CQ "Context Qualifier" value representing
-        /// read, write, init, etc. Set by TreeParser01, and as of 2004.7.16, this is only set for Field_ref and RECORD_NAME
-        /// nodes.
-        /// </summary>
-        /// <seealso cref= org.prorefactor.treeparser.ContextQualifier </seealso>
-        public const int CONTEXT_QUALIFIER = 10160;
 
         // From JPNode, to be moved into an enum
         /// <summary>

@@ -75,6 +75,6 @@ namespace ABLParser.Sonar.Api.Objects
 
 		public int Storetype => IConstants.ST_TTABLE;
 
-		public string ToString() => $"TT Wrapper for {table.Name} - {FieldSet.Count} fields - {Indexes.Count} indexes";
+		public override string ToString() => $"TT Wrapper for {table.Name} - {FieldSet.Count} fields - {Indexes.Count} indexes";
 	}
 }

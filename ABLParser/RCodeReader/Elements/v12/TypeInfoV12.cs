@@ -90,7 +90,7 @@ namespace ABLParser.RCodeReader.Elements.v12
                         typeInfo.Methods.Add(mthd);
                         break;
                     case ElementKind.PROPERTY:
-                        IPropertyElement prop = PropertyElementV12.FromDebugSegment(name, set, segment, currOffset, textAreaOffset, isLittleEndian);
+                        IPropertyElement prop = PropertyElementV12.FromDebugSegment(name, set, segment, currOffset, textAreaOffset, isLittleEndian, isEnum);
                         currOffset += (uint)prop.SizeInRCode;
                         typeInfo.Properties.Add(prop);
                         break;

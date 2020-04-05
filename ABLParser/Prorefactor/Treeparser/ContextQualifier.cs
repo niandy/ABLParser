@@ -24,6 +24,11 @@ namespace ABLParser.Prorefactor.Treeparser
         /// </summary>
         public static readonly ContextQualifier UPDATING = new ContextQualifier("UPDATING", InnerEnum.UPDATING);
         /// <summary>
+        /// Creating (thus updating) symbol's value with a GUI component
+        /// </summary>
+        //JAVA TO C# CONVERTER TODO TASK: The following line uses invalid syntax:
+        public static readonly ContextQualifier UPDATING_UI = new ContextQualifier("UPDATING_UI", InnerEnum.UPDATING_UI);
+        /// <summary>
         /// We are strictly referencing the symbol - not its value. Used both for field and table symbols. For table symbols,
         /// the lookup is done by schema symbols first, buffer symbols second.
         /// </summary>
@@ -57,6 +62,7 @@ namespace ABLParser.Prorefactor.Treeparser
             valueList.Add(REF);
             valueList.Add(REFUP);
             valueList.Add(UPDATING);
+            valueList.Add(UPDATING_UI);
             valueList.Add(SYMBOL);
             valueList.Add(BUFFERSYMBOL);
             valueList.Add(TEMPTABLESYMBOL);
@@ -71,6 +77,7 @@ namespace ABLParser.Prorefactor.Treeparser
             REF,
             REFUP,
             UPDATING,
+            UPDATING_UI,
             SYMBOL,
             BUFFERSYMBOL,
             TEMPTABLESYMBOL,
@@ -94,7 +101,7 @@ namespace ABLParser.Prorefactor.Treeparser
         /// <summary>
         /// Is symbol's value "read" in this context?
         /// </summary>
-        public static bool isRead(ContextQualifier cq)
+        public static bool IsRead(ContextQualifier cq)
         {
             switch (cq.innerEnumValue)
             {
@@ -111,12 +118,13 @@ namespace ABLParser.Prorefactor.Treeparser
         /// <summary>
         /// Is the symbol's value "written" in this context?
         /// </summary>
-        public static bool isWrite(ContextQualifier cq)
+        public static bool IsWrite(ContextQualifier cq)
         {
             switch (cq.innerEnumValue)
             {
                 case ContextQualifier.InnerEnum.REFUP:
                 case ContextQualifier.InnerEnum.UPDATING:
+                case ContextQualifier.InnerEnum.UPDATING_UI:
                     return true;
                 default:
                     return false;
@@ -126,32 +134,15 @@ namespace ABLParser.Prorefactor.Treeparser
         /// <summary>
         /// Is the symbol's value "referenced" in this context?
         /// </summary>
-        public static bool isReference(ContextQualifier cq)
-        {
-            if (cq == SYMBOL)
-            {
-                return true;
-            }
-            return false;
-        }
+        public static bool IsReference(ContextQualifier cq) => cq == SYMBOL ? true : false;
 
+        public static IList<ContextQualifier> Values() => valueList;
 
-        public static IList<ContextQualifier> values()
-        {
-            return valueList;
-        }
+        public int Ordinal() => ordinalValue;
 
-        public int ordinal()
-        {
-            return ordinalValue;
-        }
+        public override string ToString() => nameValue;        
 
-        public override string ToString()
-        {
-            return nameValue;
-        }
-
-        public static ContextQualifier valueOf(string name)
+        public static ContextQualifier ValueOf(string name)
         {
             foreach (ContextQualifier enumInstance in ContextQualifier.valueList)
             {
@@ -163,5 +154,4 @@ namespace ABLParser.Prorefactor.Treeparser
             throw new System.ArgumentException(name);
         }
     }
-
 }

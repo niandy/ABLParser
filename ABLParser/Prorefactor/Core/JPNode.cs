@@ -101,8 +101,7 @@ namespace ABLParser.Prorefactor.Core
         public virtual JPNode PreviousSibling => (childNum > 0) && (parent != null) ? parent.Children[childNum - 1] : null;
 
         /// <summary>
-        /// First Natural Child is found by repeating firstChild() until a natural node is found. If the start node is a
-        /// natural node, then it is returned.
+        /// <returns> First child node associated to a physical token in the source code. </returns>
         /// </summary>
         public virtual JPNode FirstNaturalChild
         {
@@ -112,11 +111,15 @@ namespace ABLParser.Prorefactor.Core
                 {
                     return this;
                 }
-                for (JPNode n = FirstChild; n != null; n = n.FirstChild)
+                if (children != null)
                 {
-                    if (n.token.Natural)
+                    foreach (JPNode ch in children)
                     {
-                        return n;
+                        JPNode natCh = ch.FirstNaturalChild;
+                        if (natCh != null)
+                        {
+                            return natCh;
+                        }
                     }
                 }
                 return null;
@@ -201,6 +204,30 @@ namespace ABLParser.Prorefactor.Core
 
             return ret;
         }
+
+        /// <summary>
+        /// Does this node contain another node ?
+        /// </summary>
+        public virtual bool Contains(JPNode node)
+        {
+            if (this == node)
+            {
+                return true;
+            }
+            if (children == null)
+            {
+                return false;
+            }
+            foreach (JPNode ch in children)
+            {
+                if ((ch == node) || ch.Contains(node))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
 
         /// <summary>

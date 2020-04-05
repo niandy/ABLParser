@@ -15,7 +15,7 @@ namespace ABLParser.RCodeReader.Elements.v12
 		{
 			int dataType = ByteBuffer.Wrap(segment, currentPos + 14, sizeof(short)).Order(isLittleEndian).GetShort();
 			int extent = ByteBuffer.Wrap(segment, currentPos + 18, sizeof(short)).Order(isLittleEndian).GetShort();
-			int flags = ByteBuffer.Wrap(segment, currentPos + 20, sizeof(short)).Order(isLittleEndian).GetShort();
+			int flags = ByteBuffer.Wrap(segment, currentPos + 20, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
 
 			int nameOffset = ByteBuffer.Wrap(segment, currentPos, sizeof(int)).Order(isLittleEndian).GetInt();
 			string name2 = nameOffset == 0 ? name : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + nameOffset);

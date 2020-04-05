@@ -64,7 +64,7 @@ namespace ABLParser.RCodeReader
 				FileStream fs = pl.OpenRead();
 				BinaryReader br = new BinaryReader(fs);
 				ushort magic;
-				magic = br.ReadUInt16();
+				magic = ByteBuffer.Wrap(br.ReadBytes(2), 0, 2).Order(false).GetUnsignedShort();
 
 				if (magic != MAGIC_V11)
 				{
@@ -141,7 +141,7 @@ namespace ABLParser.RCodeReader
 			{
 				throw new Exception("Invalid PL file");
 			}
-			return BitConverter.ToInt32(bTOC, 0);
+			return ByteBuffer.Wrap(bTOC, 0, 4).Order(false).GetInt();
 		}
 		
 		//JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
@@ -175,10 +175,10 @@ namespace ABLParser.RCodeReader
 				byte[] b2 = br.ReadBytes(fNameSize);
 				string fName = charset.GetString(b2);
 				byte[] b3 = br.ReadBytes(48); // Ou 47				
-				int fileOffset = BitConverter.ToInt32(b3, 6); // 7
-				int fileSize = BitConverter.ToInt32(b3, 11); // 12
-				long added = BitConverter.ToInt32(b3, 15) * 1000L; // 16
-				long modified = BitConverter.ToInt32(b3, 19) * 1000L; // 20
+				int fileOffset = ByteBuffer.Wrap(b3, 6, 4).Order(false).GetInt(); // 7
+				int fileSize = ByteBuffer.Wrap(b3, 11, 4).Order(false).GetInt(); // 12
+				long added = ByteBuffer.Wrap(b3, 15, 4).Order(false).GetInt() * 1000L; // 16
+				long modified = ByteBuffer.Wrap(b3, 19, 4).Order(false).GetInt() * 1000L; // 20
 
 				int tocSize = (b3[47] == 0 ? 50 : 49) + fNameSize;
 				return new FileEntry(fName, modified, added, fileOffset, fileSize, tocSize);

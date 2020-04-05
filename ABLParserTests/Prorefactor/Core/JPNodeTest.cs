@@ -41,7 +41,7 @@ namespace ABLParserTests.Prorefactor.Core
                 new RCodeInfo(new BinaryReader(new FileStream("Resources/data/ttClass.r", FileMode.Open))).TypeInfo);
             session.InjectTypeInfo(
                 new RCodeInfo(new BinaryReader(new FileStream("Resources/data/ProtectedTT.r", FileMode.Open))).TypeInfo);
-            
+
             Directory.CreateDirectory(TEMP_DIR);
         }
 
@@ -325,7 +325,7 @@ namespace ABLParserTests.Prorefactor.Core
             ParseUnit unit = GenericTest("xref.p");
             unit.TreeParser01();
 
-            XmlSerializer serializer = new XmlSerializer(typeof(Crossreference));            
+            XmlSerializer serializer = new XmlSerializer(typeof(Crossreference));
 
             Crossreference doc = (Crossreference)serializer.Deserialize(new FileStream(Path.Combine(SRC_DIR, "xref.p.xref"), FileMode.Open));
             unit.AttachXref(doc);
@@ -347,6 +347,28 @@ namespace ABLParserTests.Prorefactor.Core
             Assert.AreEqual("Item.ItemNum", item.SearchIndexName);
         }
 
+        //JAVA TO C# CONVERTER WARNING: Method 'throws' clauses are not available in C#:
+        //ORIGINAL LINE: [TestMethod] public void testXref02() throws JAXBException, IOException, SAXException, ParserConfigurationException
+        [TestMethod]
+        public virtual void TestXref02()
+        {
+            ParseUnit unit = GenericTest("xref2.cls");
+            unit.TreeParser01();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Crossreference));
+
+            Crossreference doc = (Crossreference)serializer.Deserialize(new FileStream(Path.Combine(SRC_DIR, "xref2.cls.xref"), FileMode.Open));
+            
+            unit.AttachXref(doc);
+
+            Assert.AreEqual(3, unit.TopNode.Query(ABLNodeType.RECORD_NAME).Count);
+            foreach (JPNode node in unit.TopNode.Query(ABLNodeType.RECORD_NAME))
+            {
+                RecordNameNode rec = (RecordNameNode)node;
+                Assert.AreEqual("ttFoo", rec.TableBuffer.Table.GetName());
+                Assert.IsTrue(rec.WholeIndex);
+            }
+        }
 
 
     }

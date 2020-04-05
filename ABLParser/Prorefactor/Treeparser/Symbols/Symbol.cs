@@ -93,22 +93,22 @@ namespace ABLParser.Prorefactor.Treeparser.Symbols
 
         public TreeParserSymbolScope Scope { get; }
 
-        public void NoteReference(ContextQualifier contextQualifier)
+        public virtual void NoteReference(ContextQualifier contextQualifier)
         {
             if (contextQualifier == null)
             {
                 return;
             }
             allRefsCount++;
-            if (ContextQualifier.isRead(contextQualifier))
+            if (ContextQualifier.IsRead(contextQualifier))
             {
                 numReads++;
             }
-            if (ContextQualifier.isWrite(contextQualifier))
+            if (ContextQualifier.IsWrite(contextQualifier))
             {
                 numWrites++;
             }
-            if (ContextQualifier.isReference(contextQualifier))
+            if (ContextQualifier.IsReference(contextQualifier))
             {
                 numRefd++;
             }

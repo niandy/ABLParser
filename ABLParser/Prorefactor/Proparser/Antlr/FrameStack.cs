@@ -255,7 +255,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
             }
             if (fieldOrVariable == null)
             {
-                LOG.Error(String.Format("Could not find input field {0} {1}:{2}", idNode.Text, idNode.FileIndex, idNode.Line));
+                LOG.Error($"Could not find input field {idNode.Text} {idNode.FileName}:{idNode.Line}");
                 return null;
             }
             fieldRefNode.FieldContainer = fieldContainer;

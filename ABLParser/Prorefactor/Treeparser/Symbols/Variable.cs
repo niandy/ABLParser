@@ -10,7 +10,7 @@ namespace ABLParser.Prorefactor.Treeparser.Symbols
     /// </summary>
     public class Variable : Symbol, Primative, Value
     {
-        private bool refInFrame = false;
+        private bool refInFrame = false;        
 
         public Variable(string name, TreeParserSymbolScope scope) : base(name, scope)
         {
@@ -39,6 +39,8 @@ namespace ABLParser.Prorefactor.Treeparser.Symbols
         public int Extent { get; private set; }
 
         public object Value { get; set; }
+
+        public bool GraphicalComponent { get; private set; } = false;
 
         /// <summary>
         /// Returns NodeTypes.VARIABLE
@@ -72,6 +74,15 @@ namespace ABLParser.Prorefactor.Treeparser.Symbols
         public virtual bool IsReferencedInFrame()
         {            
             return refInFrame;            
+        }
+
+        public override void NoteReference(ContextQualifier contextQualifier)
+        {
+            base.NoteReference(contextQualifier);
+            if (contextQualifier == ContextQualifier.UPDATING_UI)
+            {
+                GraphicalComponent = true;
+            }
         }
 
         internal override bool IsInstanceOfType(Symbol s) => s is Variable;        

@@ -18,7 +18,7 @@ namespace ABLParser.RCodeReader.Elements.v11
 
 		public static DataRelationElementV11 FromDebugSegment(byte[] segment, uint currentPos, int textAreaOffset, bool isLittelEndian)
 		{
-			int flags = ByteBuffer.Wrap(segment, currentPos + 2, sizeof(short)).Order(isLittelEndian).GetShort() & 0xffff;
+			int flags = ByteBuffer.Wrap(segment, currentPos + 2, sizeof(short)).Order(isLittelEndian).GetUnsignedShort();
 
 			int parentBufferNameOffset = ByteBuffer.Wrap(segment, currentPos + 8, sizeof(int)).Order(isLittelEndian).GetInt();
 			string parentBufferName = parentBufferNameOffset == 0 ? "" : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + parentBufferNameOffset);

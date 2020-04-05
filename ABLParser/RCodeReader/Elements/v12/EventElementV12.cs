@@ -11,7 +11,7 @@ namespace ABLParser.RCodeReader.Elements.v12
 
 		public new static IEventElement FromDebugSegment(string name, AccessType accessType, byte[] segment, uint currentPos, int textAreaOffset, bool isLittleEndian)
 		{
-			int flags = ByteBuffer.Wrap(segment, currentPos + 18, sizeof(short)).Order(isLittleEndian).GetShort() & 0xffff;
+			int flags = ByteBuffer.Wrap(segment, currentPos + 18, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
 			int returnType = ByteBuffer.Wrap(segment, currentPos + 22, sizeof(short)).Order(isLittleEndian).GetShort();
 			int parameterCount = ByteBuffer.Wrap(segment, currentPos + 22, sizeof(short)).Order(isLittleEndian).GetShort();
 
