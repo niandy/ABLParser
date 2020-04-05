@@ -1,2 +1,11 @@
 language: csharp
 solution: ABLParser.sln
+dist: trusty
+addons:
+  sonarcloud:
+    organization: "niandy-github"
+    token:
+      secure: "Es60wUTZm5ZEQ32f9f42b2oYET0Vt2Sxv1PkMMltvStF2ch4ni2vnMIqTDmoI7ZoaoMUT3pRvuEWcxHdf9TMaCB+q4VGdKz1Xk7venxUPfB99DoErRLSLoKwIkv26w6mJ9GhOoTE8k/gmcGryRh0kddRhzG1zBOcBFMDNLVNYO9FgpRO5VY3pAml5AIiAH+FXwboE6QxA//SiOweBXnPNVXtRlEZygHAh3ex4filaRYoiOfXe6WR9mlxv2ENsHLEDRdqHUGvZwzaN9cE969/oM+p6K8yDvH6tCCPdGkSqAZ7iVbQwdPq3GdR44SLNRjZYPBS9XsvnzV6r8SAHMwBn6UGXyNCV2KXPu25z8Bthifn654CwXS/eeOLMXkjkx7ulFmhkpkevuum0IR643y2w0/cCue/E9Gi44irzYdai3kxA9VRQf/3NfilwIdBUokaqjwcqe/WZjE6r+79Ia7C0sCnw8vYcNDbZ+f56YhJXGpmj6Owgl4OWtQuS/D18hnz6259Jvt6gl3P8fs8l9QLovIuTqseXITBQLgeQy1iwBClPE3brT9iKaiyTPDTeQPS7bEjN896ZOlAYU9DdVLr1lff6vGesbULUzGYLbfZgC/GFAYGmUCVVVofFsNyOHYIivga/JuA5b2RFQZ9kNuKhH7Jt/cGcLrxpZ/Ow0QAnjk="
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - sonar-scanner
