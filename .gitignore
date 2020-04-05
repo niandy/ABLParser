@@ -3,3 +3,4 @@
 /ABLParser/obj/
 /ABLParserTests/bin/
 /ABLParserTests/obj/
+.travis.yml

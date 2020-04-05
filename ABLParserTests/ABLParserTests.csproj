@@ -99,6 +99,7 @@
     <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\ablunit.pl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
