@@ -1165,6 +1165,9 @@
     <None Include="Resources\treeparser03\test15.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\treeparser03\test17.p">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\treeparser04-expect\frames.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

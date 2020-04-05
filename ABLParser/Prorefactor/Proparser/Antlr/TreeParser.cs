@@ -801,7 +801,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         public override void EnterCreateBrowseStatement(CreateBrowseStatementContext ctx)
         {
-            SetContextQualifier(ctx.expressionTerm(), ContextQualifier.UPDATING);
+            SetContextQualifier(ctx.expressionTerm(), ContextQualifier.UPDATING_UI);
         }
 
         public override void EnterCreateBufferStatement(CreateBufferStatementContext ctx)
@@ -836,7 +836,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         public override void EnterCreateWidgetStatement(CreateWidgetStatementContext ctx)
         {
-            SetContextQualifier(ctx.field(), ContextQualifier.UPDATING);
+            SetContextQualifier(ctx.field(), ContextQualifier.UPDATING_UI);
         }
         public override void EnterCanFindFunction(CanFindFunctionContext ctx)
         {
@@ -2435,6 +2435,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
                 case ContextQualifier.InnerEnum.REF:
                 case ContextQualifier.InnerEnum.REFUP:
                 case ContextQualifier.InnerEnum.UPDATING:
+                case ContextQualifier.InnerEnum.UPDATING_UI:
                 case ContextQualifier.InnerEnum.BUFFERSYMBOL:
                     buffer = currentScope.GetBufferSymbol(recordNode.Text);
                     break;

@@ -313,6 +313,29 @@ namespace ABLParserTests.Prorefactor.Core
             Assert.AreNotEqual(dummy.Parameters[0].Symbol, doIt.Parameters[0].Symbol);
         }
 
+        [TestMethod]
+        public virtual void Test17()
+        {
+            ParseUnit unit = new ParseUnit(new FileInfo("Resources/treeparser03/test17.p"), session);
+            Assert.IsNull(unit.TopNode);
+            unit.TreeParser01();
+            Assert.IsNotNull(unit.TopNode);
+            Assert.IsNotNull(unit.RootScope);
 
+            Assert.AreEqual(4, unit.RootScope.Variables.Count);
+
+            Variable hMenuItem = unit.RootScope.GetVariable("hMenuItem");
+            Assert.IsNotNull(hMenuItem);
+            Assert.IsTrue(hMenuItem.GraphicalComponent);
+            Variable hQuery = unit.RootScope.GetVariable("hQuery");
+            Assert.IsNotNull(hQuery);
+            Assert.IsFalse(hQuery.GraphicalComponent);
+            Variable hbCust = unit.RootScope.GetVariable("hbCust");
+            Assert.IsNotNull(hbCust);
+            Assert.IsTrue(hbCust.GraphicalComponent);
+            Variable hSock = unit.RootScope.GetVariable("hSock");
+            Assert.IsNotNull(hSock);
+            Assert.IsFalse(hSock.GraphicalComponent);
+        }
     }
 }
