@@ -1162,6 +1162,9 @@
     <None Include="Resources\treeparser03\test14.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\treeparser03\test15.p">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\treeparser04-expect\frames.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1455,6 +1458,9 @@
     <Content Include="Resources\data\ttClass.cls">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\treeparser03\test16.cls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\jpnode\xref2.cls">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

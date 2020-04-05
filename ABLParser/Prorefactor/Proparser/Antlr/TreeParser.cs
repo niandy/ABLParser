@@ -42,7 +42,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         private TableBuffer lastTableReferenced;
         private TableBuffer prevTableReferenced;
-        private FrameStack frameStack = new FrameStack();
+        private readonly FrameStack frameStack = new FrameStack();
 
         private TableBuffer currDefTable;
         private Index currDefIndex;
@@ -57,9 +57,9 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
         // it in the support class. If we move grammar and actions around
         // within this .g, the effect on the stack should be highly visible.
         // Deque implementation has to support null elements
-        private LinkedList<Symbol> stack = new LinkedList<Symbol>();
+        private readonly LinkedList<Symbol> stack = new LinkedList<Symbol>();
         // Since there can be more than one WIP Call, there can be more than one WIP Parameter
-        private LinkedList<Parameter> wipParameters = new LinkedList<Parameter>();
+        private readonly LinkedList<Parameter> wipParameters = new LinkedList<Parameter>();
 
         /*
          * Note that blockStack is *only* valid for determining the current block - the stack itself cannot be used for
@@ -68,10 +68,10 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
          * is always the program block, but a programmer may code a scope into a non-root block... which we need to make
          * current again once done inside the scope.
          */
-        private IList<Block> blockStack = new List<Block>();
-        private IDictionary<string, TreeParserSymbolScope> funcForwards = new Dictionary<string, TreeParserSymbolScope>();
-        private ParseTreeProperty<ContextQualifier> contextQualifiers = new ParseTreeProperty<ContextQualifier>();
-        private ParseTreeProperty<TableNameResolution> nameResolution = new ParseTreeProperty<TableNameResolution>();
+        private readonly IList<Block> blockStack = new List<Block>();
+        private readonly IDictionary<string, TreeParserSymbolScope> funcForwards = new Dictionary<string, TreeParserSymbolScope>();
+        private readonly ParseTreeProperty<ContextQualifier> contextQualifiers = new ParseTreeProperty<ContextQualifier>();
+        private readonly ParseTreeProperty<TableNameResolution> nameResolution = new ParseTreeProperty<TableNameResolution>();
 
         // Temporary work-around
         private bool inDefineEvent = false;
@@ -271,7 +271,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         public override void ExitParameterArgTableHandle(ParameterArgTableHandleContext ctx)
         {
-            noteReference(support.GetNode(ctx.field()), contextQualifiers.RemoveFrom(ctx));
+            NoteReference(support.GetNode(ctx.field()), contextQualifiers.RemoveFrom(ctx));
         }
 
         public override void EnterParameterArgTable(ParameterArgTableContext ctx)
@@ -286,7 +286,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         public override void ExitParameterArgDatasetHandle(ParameterArgDatasetHandleContext ctx)
         {
-            noteReference(support.GetNode(ctx.field()), contextQualifiers.RemoveFrom(ctx));
+            NoteReference(support.GetNode(ctx.field()), contextQualifiers.RemoveFrom(ctx));
         }
 
         public override void EnterParameterArgAs(ParameterArgAsContext ctx)
@@ -1355,7 +1355,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
         public override void EnterDefineWorkTableStatement(DefineWorkTableStatementContext ctx)
         {
-            defineWorktable(support.GetNode(ctx), support.GetNode(ctx.identifier()), ctx.identifier().GetText());
+            DefineWorktable(support.GetNode(ctx), support.GetNode(ctx.identifier()), ctx.identifier().GetText());
         }
 
         public override void EnterDefineVariableStatement(DefineVariableStatementContext ctx)
@@ -1551,7 +1551,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
         {
             if (ctx.constant() != null)
             {
-                defExtent(ctx.constant().GetText());
+                DefExtent(ctx.constant().GetText());
             }
         }
 
@@ -1769,6 +1769,40 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
             ScopeClose();
             currentRoutine = rootRoutine;
         }
+
+        public override void EnterExternalFunctionStatement(ExternalFunctionStatementContext ctx)
+        {
+            if (LOG.IsDebugEnabled)
+            {
+                LOG.Debug($"{Indent()}> New external function definition '{ctx.id.GetText()}'");
+            }
+
+            TreeParserSymbolScope definingScope = currentScope;
+            BlockNode blockNode = (BlockNode)support.GetNode(ctx);
+            ScopeAdd(blockNode);
+
+            Routine r = new Routine(ctx.id.GetText(), definingScope, currentScope);
+            if (ctx.typeName() != null)
+            {
+                r.ReturnDatatypeNode = DataType.CLASS;
+            }
+            else
+            {
+                r.ReturnDatatypeNode = DataType.GetDataType(ctx.datatypeVar().Start.Type);
+            }
+            r.SetProgressType(ABLNodeType.FUNCTION);
+            r.DefinitionNode = blockNode;
+            blockNode.Symbol = r;
+            definingScope.Add(r);
+            currentRoutine = r;
+        }
+
+        public override void ExitExternalFunctionStatement(ExternalFunctionStatementContext ctx)
+        {
+            ScopeClose();
+            currentRoutine = rootRoutine;
+        }
+
 
         public override void EnterGetKeyValueStatement(GetKeyValueStatementContext ctx)
         {
@@ -2622,7 +2656,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
             }
         }
 
-        public virtual void defExtent(string text)
+        public virtual void DefExtent(string text)
         {
             if (LOG.IsDebugEnabled)
             {
@@ -2833,7 +2867,7 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
         {
             LOG.Debug($"Entering astTableLink {tableAST}");
             TableBuffer buffer = (TableBuffer)tableAST.Symbol;
-            return buffer == null ? null : buffer.Table;
+            return buffer?.Table;
         }
 
         /// <summary>
@@ -2880,12 +2914,12 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
             currSymbol = bufSymbol;
         }
 
-        private void defineWorktable(JPNode defAST, JPNode idAST, string name)
+        private void DefineWorktable(JPNode defAST, JPNode idAST, string name)
         {
             DefineTable(defAST, idAST, name, IConstants.ST_WTABLE);
         }
 
-        public virtual void noteReference(JPNode node, ContextQualifier cq)
+        public virtual void NoteReference(JPNode node, ContextQualifier cq)
         {
             if ((node.Symbol != null) && ((cq == ContextQualifier.UPDATING) || (cq == ContextQualifier.REFUP)))
             {
@@ -2971,12 +3005,12 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
             string clsRef = ctx2.field().GetText();
             string clsName = rootScope.ClassName;
-            if ((!string.ReferenceEquals(clsRef, null)) && (!string.ReferenceEquals(clsName, null)) && (clsRef.IndexOf('.') == -1) && (clsName.IndexOf('.') != -1))
+            if ((clsRef != null) && (clsName != null) && (clsRef.IndexOf('.') == -1) && (clsName.IndexOf('.') != -1))
             {
                 clsName = clsName.Substring(clsName.IndexOf('.') + 1);
             }
 
-            if ((!string.ReferenceEquals(clsRef, null)) && (!string.ReferenceEquals(clsName, null)) && clsRef.Equals(clsName, StringComparison.OrdinalIgnoreCase))
+            if ((clsRef != null) && (clsName != null) && clsRef.Equals(clsName, StringComparison.OrdinalIgnoreCase))
             {
                 FieldLookupResult result = currentBlock.LookupField(right, true);
                 if (result == null)
@@ -3103,9 +3137,8 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
 
             refNode.Symbol = (Symbol)result.Symbol;
             result.Symbol.NoteReference(cq);
-            if (result.Symbol is FieldBuffer)
+            if (result.Symbol is FieldBuffer fb)
             {
-                FieldBuffer fb = (FieldBuffer)result.Symbol;
                 refNode.AttrSet(IConstants.STORETYPE, fb.Field.Table.Storetype);
                 if (fb.Buffer != null)
                 {

@@ -265,5 +265,54 @@ namespace ABLParserTests.Prorefactor.Core
             Assert.AreEqual(3, xxx.NumWrites);
         }
 
+        [TestMethod]
+        public virtual void Test15()
+        {
+            ParseUnit unit = new ParseUnit(new FileInfo("Resources/treeparser03/test15.p"), session);
+            Assert.IsNull(unit.TopNode);
+            unit.TreeParser01();
+            Assert.IsNotNull(unit.TopNode);
+            Assert.IsNotNull(unit.RootScope);
+
+            Assert.AreEqual(2, unit.RootScope.Variables.Count);
+            Variable v1 = unit.RootScope.GetVariable("v1");
+            Variable v2 = unit.RootScope.GetVariable("v2");
+            Assert.IsNotNull(v1);
+            Assert.IsNotNull(v2);
+            Routine dummy = unit.RootScope.RoutineMap["dummy"];
+            Assert.IsNotNull(dummy);
+            Assert.AreEqual(1, dummy.Parameters.Count);
+            Assert.AreEqual("p1", dummy.Parameters[0].Symbol.Name);
+        }
+
+        [TestMethod]
+        public virtual void Test16()
+        {
+            ParseUnit unit = new ParseUnit(new FileInfo("Resources/treeparser03/test16.cls"), session);
+            Assert.IsNull(unit.TopNode);
+            unit.TreeParser01();
+            Assert.IsNotNull(unit.TopNode);
+            Assert.IsNotNull(unit.RootScope);
+
+            Assert.AreEqual(1, unit.RootScope.Variables.Count);
+            Variable hInstance = unit.RootScope.GetVariable("hInstance");
+            Assert.IsNotNull(hInstance);
+
+            Routine dummy = unit.RootScope.RoutineMap["dummy"];
+            Assert.IsNotNull(dummy);
+            Assert.AreEqual(1, dummy.Parameters.Count);
+            Assert.AreEqual("picVariable", dummy.Parameters[0].Symbol.Name);
+
+            Routine doIt = unit.RootScope.RoutineMap["doit"];
+            Assert.IsNotNull(doIt);
+            Assert.AreEqual(1, doIt.Parameters.Count);
+            Assert.AreEqual("picVariable", doIt.Parameters[0].Symbol.Name);
+
+            // Should not be the same object
+            Assert.AreNotEqual(dummy.Parameters[0], doIt.Parameters[0]);
+            Assert.AreNotEqual(dummy.Parameters[0].Symbol, doIt.Parameters[0].Symbol);
+        }
+
+
     }
 }
