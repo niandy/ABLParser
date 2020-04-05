@@ -2691,7 +2691,11 @@ namespace ABLParser.Prorefactor.Proparser.Antlr
             }
             else
             {
-                LOG.Error("Failed to find LIKE datatype at {likeNode.FileIndex} line {likeNode.Line}");
+                JPNode naturalNode = likeNode.FirstNaturalChild;
+                if (naturalNode != null)
+                {
+                    LOG.Error($"Failed to find LIKE datatype at {naturalNode.FileName} line {naturalNode.Line}");
+                }                
             }
         }
 
