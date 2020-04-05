@@ -35,7 +35,7 @@ namespace ABLParser.Prorefactor.Treeparser
         private readonly string relativeName;
 
         private IntegerIndex<string> fileNameList;
-        private IParseTree tree;        
+        private IParseTree tree;
 
         private ProgramRootNode topNode;
         private IncludeRef macroGraph;
@@ -82,7 +82,7 @@ namespace ABLParser.Prorefactor.Treeparser
 
         public virtual JPNodeMetrics Metrics => metrics;
 
-        public virtual string GetIncludeFileName(int index) => fileNameList?.GetValue(index) ?? "";        
+        public virtual string GetIncludeFileName(int index) => fileNameList?.GetValue(index) ?? "";
 
         /// <returns> IncludeRef object </returns>
         //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
@@ -201,6 +201,40 @@ namespace ABLParser.Prorefactor.Treeparser
             AttachXrefToTreeParser(TopNode, xref);
         }
 
+        private static bool IsReferenceAssociatedToRecordNode(RecordNameNode recNode, CrossreferenceSource src, CrossreferenceSourceReference @ref, string tableName, int tableType)
+        {
+            // On the same line number
+            if (recNode.Statement.FirstNaturalChild.Line != @ref.Linenum)
+            {
+                return false;
+            }
+            // On the same table
+            if ((recNode.TableBuffer == null) || !tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase) || (recNode.AttrGet(IConstants.STORETYPE) != tableType))
+            {
+                return false;
+            }
+            // In the main file ?
+            if ((src.Filenum == 1) && (recNode.FileIndex == 0))
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    // Or in the same include file ?
+                    return ((src.Filenum > 1)
+                        && (recNode.Statement.FileName != null)
+                        && (Path.GetFullPath(src.Filename) == Path.GetFullPath(recNode.Statement.FileName)));
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
+            }
+        }
+
+
         public static void AttachXrefToTreeParser(ProgramRootNode root, Crossreference xref)
         {
             IList<JPNode> recordNodes = root.Query(ABLNodeType.RECORD_NAME);
@@ -227,25 +261,13 @@ namespace ABLParser.Prorefactor.Treeparser
 
                         bool lFound = false;
                         foreach (RecordNameNode recNode in recordNodes)
-                        {                            
-                            try
+                        {
+                            if (IsReferenceAssociatedToRecordNode(recNode, src, @ref, tableName, tableType))
                             {
-                                if ((recNode.Statement.FirstNaturalChild.Line == @ref.Linenum)
-                                    && (recNode.TableBuffer != null)
-                                    && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase)
-                                    && (recNode.AttrGet(IConstants.STORETYPE) == tableType)
-                                    && ((src.Filenum == 1 && recNode.FileIndex == 0)
-                                        || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
-                                {
-                                    recNode.WholeIndex = "WHOLE-INDEX".Equals(@ref.Detail);
-                                    recNode.SearchIndexName = recNode.TableBuffer.Table.GetName() + "." + @ref.Objectcontext;
-                                    lFound = true;
-                                    break;
-                                }
-                            }
-                            catch (IOException)
-                            {
-                                // Nothing
+                                recNode.WholeIndex = "WHOLE-INDEX".Equals(@ref.Detail);
+                                recNode.SearchIndexName = recNode.TableBuffer.Table.GetName() + "." + @ref.Objectcontext;
+                                lFound = true;
+                                break;
                             }
                         }
                         if (!lFound && "WHOLE-INDEX".Equals(@ref.Detail))
@@ -269,22 +291,11 @@ namespace ABLParser.Prorefactor.Treeparser
                         }
 
                         foreach (RecordNameNode recNode in recordNodes)
-                        {                            
-                            try
+                        {
+                            if (IsReferenceAssociatedToRecordNode(recNode, src, @ref, tableName, tableType))
                             {
-                                if ((recNode.Statement.FirstNaturalChild.Line == @ref.Linenum)
-                                    && tableName.Equals(recNode.TableBuffer.TargetFullName, StringComparison.OrdinalIgnoreCase)
-                                    && (recNode.AttrGet(IConstants.STORETYPE) == tableType)
-                                    && ((src.Filenum == 1 && recNode.FileIndex == 0)
-                                        || (Path.GetFullPath(srcFile.FullName) == Path.GetFullPath(recNode.Statement.FileName))))
-                                {
-                                    recNode.SortAccess = @ref.Objectcontext;
-                                    break;
-                                }
-                            }
-                            catch (IOException)
-                            {
-                                // Nothing
+                                recNode.SortAccess = @ref.Objectcontext;
+                                break;
                             }
                         }
                     }
@@ -305,26 +316,26 @@ namespace ABLParser.Prorefactor.Treeparser
 
         //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
         //ORIGINAL LINE: @Nullable public Document getXRefDocument()
-        public virtual XmlDocument XRefDocument => doc;            
+        public virtual XmlDocument XRefDocument => doc;
 
         //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
         //ORIGINAL LINE: @Nullable public CrossReference getXref()
         public virtual Crossreference Xref => xref;
-            
+
         //JAVA TO C# CONVERTER TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
         //ORIGINAL LINE: @Nullable public ITypeInfo getTypeInfo()
-        public virtual ITypeInfo TypeInfo => typeInfo;            
+        public virtual ITypeInfo TypeInfo => typeInfo;
 
         public virtual IList<int> TransactionBlocks => trxBlocks;
-            
+
         public virtual IParseTree ParseTree => tree;
-            
+
         public virtual ParserSupport Support => support;
-            
 
-        public virtual RefactorSession Session => session;            
 
-        public virtual bool AppBuilderCode => appBuilderCode;            
+        public virtual RefactorSession Session => session;
+
+        public virtual bool AppBuilderCode => appBuilderCode;
 
         public virtual bool IsInEditableSection(int file, int line)
         {
@@ -347,7 +358,7 @@ namespace ABLParser.Prorefactor.Treeparser
             get
             {
                 try
-                {                    
+                {
                     return input ?? file.Open(FileMode.Open, FileAccess.Read);
                 }
                 catch (IOException caught)
