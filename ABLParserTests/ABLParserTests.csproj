@@ -93,10 +93,16 @@
     <Compile Include="Prorefactor\Core\BugFixTest.cs" />
     <Compile Include="Prorefactor\Proparser\Antlr4\LexerTest.cs" />
     <Compile Include="Prorefactor\Proparser\Antlr4\NameDotTokenFilterTest.cs" />
+    <Compile Include="RCodeReader\DataTypeTest.cs" />
+    <Compile Include="RCodeReader\PLReaderTest.cs" />
+    <Compile Include="RCodeReader\RCodeInfoTest.cs" />
     <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\ablunit.pl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\abbrev.p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -833,6 +839,45 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\projects\sports2000\sports2000.cache">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\AbstractTTCollection.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\BackupDataCallback.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\ClassMinSize.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\compile.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\FileTypeRegistry.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\IMyTest.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\MyEnum.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\NMSTrace.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\propList.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\ttClass.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\WebRequestV11.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\WebRequestV12.r">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\rcode\_dmpincr.r">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\treeparser01-expect\test01.p">
@@ -1635,6 +1680,9 @@
     <Content Include="Resources\projects\sports2000\bdr_ignore.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\rcode\propList.cls">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Resources\treeparser03\test04.cls">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

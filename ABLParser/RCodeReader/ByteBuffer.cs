@@ -22,6 +22,9 @@ namespace ABLParser.RCodeReader
         public short GetShort() => GetShort(0);
         public short GetShort(int pos) => BitConverter.ToInt16(data, pos);
 
+        public ushort GetUnsignedShort() => GetUnsignedShort(0);
+        public ushort GetUnsignedShort(int pos) => BitConverter.ToUInt16(data, pos);
+
         public int GetInt() => GetInt(0);
         public int GetInt(int pos) => BitConverter.ToInt32(data, pos);
 

@@ -40,7 +40,7 @@ namespace ABLParser.RCodeReader.Elements.v11
 			int paramMode = ByteBuffer.Wrap(segment, currentPos + 2, sizeof(short)).Order(isLittleEndian).GetShort();
 			int extent = ByteBuffer.Wrap(segment, currentPos + 4, sizeof(short)).Order(isLittleEndian).GetShort();
 			int dataType = ByteBuffer.Wrap(segment, currentPos + 6, sizeof(short)).Order(isLittleEndian).GetShort();
-			int flags = ByteBuffer.Wrap(segment, currentPos + 10, sizeof(short)).Order(isLittleEndian).GetShort();
+			int flags = ByteBuffer.Wrap(segment, currentPos + 10, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
 			int argumentNameOffset = ByteBuffer.Wrap(segment, currentPos + 16, sizeof(int)).Order(isLittleEndian).GetInt();
 			int nameOffset = ByteBuffer.Wrap(segment, currentPos + 20, sizeof(int)).Order(isLittleEndian).GetInt();
 

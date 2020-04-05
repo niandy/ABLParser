@@ -10,19 +10,17 @@ namespace ABLParser.RCodeReader.Elements.v12
 		public BufferElementV12(string name, AccessType accessType, string tableName, string dbName, int flags) : base(name, accessType, tableName, dbName, flags) { }		
 
 		public new static IBufferElement FromDebugSegment(string name, AccessType accessType, byte[] segment, uint currentPos, int textAreaOffset, bool isLittleEndian)
-		{
-			if (isLittleEndian != BitConverter.IsLittleEndian)
-				Array.Reverse(segment);
-			int nameOffset = BitConverter.ToInt32(segment, (int)currentPos);
+		{			
+			int nameOffset = ByteBuffer.Wrap(segment, currentPos, sizeof(int)).Order(isLittleEndian).GetInt();
 			string name2 = nameOffset == 0 ? name : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + nameOffset);
 
-			int tableNameOffset = BitConverter.ToInt32(segment, (int)(currentPos + 4));
+			int tableNameOffset = ByteBuffer.Wrap(segment, currentPos + 4, sizeof(int)).Order(isLittleEndian).GetInt();
 			string tableName = tableNameOffset == 0 ? "" : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + tableNameOffset);
 
-			int databaseNameOffset = BitConverter.ToInt32(segment, (int)(currentPos + 8));
+			int databaseNameOffset = ByteBuffer.Wrap(segment, currentPos + 8, sizeof(int)).Order(isLittleEndian).GetInt();
 			string databaseName = databaseNameOffset == 0 ? "" : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + databaseNameOffset);
 
-			int flags = BitConverter.ToInt16(segment, (int)(currentPos + 18)) & 0xffff;
+			int flags = ByteBuffer.Wrap(segment, currentPos + 18, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
 
 			return new BufferElementV12(name2, accessType, tableName, databaseName, flags);
 		}	

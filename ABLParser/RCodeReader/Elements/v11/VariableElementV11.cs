@@ -23,7 +23,7 @@
 		{
 			int dataType = ByteBuffer.Wrap(segment, currentPos, sizeof(short)).Order(isLittleEndian).GetShort();
 			int extent = ByteBuffer.Wrap(segment, currentPos + 4, sizeof(short)).Order(isLittleEndian).GetShort();
-			int flags = ByteBuffer.Wrap(segment, currentPos + 6, sizeof(short)).Order(isLittleEndian).GetShort();
+			int flags = ByteBuffer.Wrap(segment, currentPos + 6, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
 
 			int nameOffset = ByteBuffer.Wrap(segment, currentPos + 12, sizeof(int)).Order(isLittleEndian).GetInt();
 			string name2 = nameOffset == 0 ? name : RCodeInfo.ReadNullTerminatedString(segment, textAreaOffset + nameOffset);

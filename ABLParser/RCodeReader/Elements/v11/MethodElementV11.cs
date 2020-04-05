@@ -35,7 +35,7 @@ namespace ABLParser.RCodeReader.Elements.v11
 
         public static IMethodElement FromDebugSegment(string name, AccessType accessType, byte[] segment, uint currentPos, int textAreaOffset, bool isLittleEndian)
         {
-            int flags = ByteBuffer.Wrap(segment, currentPos, sizeof(short)).Order(isLittleEndian).GetShort();
+            int flags = ByteBuffer.Wrap(segment, currentPos, sizeof(short)).Order(isLittleEndian).GetUnsignedShort();
             int returnType = ByteBuffer.Wrap(segment, currentPos + 2, sizeof(short)).Order(isLittleEndian).GetShort();
             int paramCount = ByteBuffer.Wrap(segment, currentPos + 4, sizeof(short)).Order(isLittleEndian).GetShort();
             int extent = ByteBuffer.Wrap(segment, currentPos + 8, sizeof(short)).Order(isLittleEndian).GetShort();
